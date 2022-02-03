@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 //import { action } from '@storybook/addon-actions';
 import Button from './Button.vue';
 
@@ -12,13 +11,10 @@ export default {
 //   onArchiveTask: action('archive-task'),
 // };
 
-const Template = args => ({
+const Template = (args, { argTypes }) => ({
   components: { Button },
-  setup() {
-    //return { args, ...actionsData };
-    return { args };
-  },
-  template: '<Task v-bind="args" />',
+  props: Object.keys(argTypes),
+  template: '<Button v-bind="$props" />',
 });
 
 export const Active = Template.bind({});
@@ -29,6 +25,6 @@ Active.args = {
 
 export const Disabled = Template.bind({});
 Active.args = {
-  label: "disabled",
+  label: 'disabled',
   disabled: true,
 };
