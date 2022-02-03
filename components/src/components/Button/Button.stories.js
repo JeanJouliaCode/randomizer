@@ -24,7 +24,7 @@ Active.args = {
 };
 
 export const Disabled = Template.bind({});
-Active.args = {
+Disabled.args = {
   label: 'disabled',
   disabled: true,
 };
