@@ -6,12 +6,10 @@
 export default {
   props: {
     label: String,
-  },
-
-  data() {
-    return {
-      disabled: false,
-    };
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   methods: {
