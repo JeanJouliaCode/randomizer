@@ -19,10 +19,15 @@ afterEach(() => {
 
 describe('Button', () => {
   test('fire when clicked', () => {
-    expect(wrapper.isVueInstance).toBeTruthy();
+    wrapper.find('.my-button').trigger('click')
+    const actual = wrapper.emitted()['click'];
+    expect(actual).toBeTruthy();
   });
 
-  test("don't fire when disabled", () => {
-    expect(wrapper.isVueInstance).toBeTruthy();
+  test("don't fire when disabled", async () => {
+    await wrapper.setProps({ disabled: true })
+    wrapper.find('.my-button').trigger('click')
+    const actual = wrapper.emitted()['click'];
+    expect(actual).toBeUndefined();
   });
 });
