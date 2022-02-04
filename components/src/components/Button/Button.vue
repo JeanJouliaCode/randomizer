@@ -37,16 +37,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../scss/colors";
+
 .my-button {
-  background: black;
+  background: $green;
   color: white;
-  border-radius: 50px;
-  padding: 0 20px;
-  line-height: 35px;
+  border-radius: 0.5em;
+  padding: 0 1.2em;
+  line-height: 2.2em;
   border: unset;
 
   &--disabled {
-    background: grey;
+    background: $light-green;
     pointer-events: none;
   }
 }
