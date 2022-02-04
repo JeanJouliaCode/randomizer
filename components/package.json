@@ -1,14 +1,18 @@
 {
-  "name": "components",
+  "name": "randomizer-components",
   "version": "0.1.0",
   "private": true,
+  "main": "./dist/components-library.common.js",
+  "files": [
+    "./dist/*"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "build": "vue-cli-service build --target lib --name components-library ./src/index.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
