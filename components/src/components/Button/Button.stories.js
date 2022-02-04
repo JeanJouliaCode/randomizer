@@ -1,4 +1,4 @@
-//import { action } from '@storybook/addon-actions';
+import { action } from '@storybook/addon-actions';
 import Button from './Button.vue';
 
 export default {
@@ -6,15 +6,13 @@ export default {
   title: 'Components/Button',
 };
 
-// export const actionsData = {
-//   onPinTask: action('pin-task'),
-//   onArchiveTask: action('archive-task'),
-// };
-
 const Template = (args, { argTypes }) => ({
   components: { Button },
   props: Object.keys(argTypes),
-  template: '<Button v-bind="$props" />',
+  template: '<Button v-bind="$props" @click="action"/>',
+  methods: {
+    action: action("click"),
+  },
 });
 
 export const Active = Template.bind({});

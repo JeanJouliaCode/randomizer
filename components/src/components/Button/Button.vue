@@ -46,6 +46,9 @@ export default {
   padding: 0 1.2em;
   line-height: 2.2em;
   border: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &--disabled {
     background: $light-green;
