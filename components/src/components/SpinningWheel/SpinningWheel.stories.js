@@ -17,6 +17,6 @@ const Template = (args, { argTypes }) => ({
 
 export const Base = Template.bind({});
 Base.args = {
-  values: ['test0', 'test1', 'test2', 'test3', 'test4']
-  ,
+  values: ['test0', 'test1', 'test2', 'test3', 'test4'],
+  canBeClicked: true,
 };

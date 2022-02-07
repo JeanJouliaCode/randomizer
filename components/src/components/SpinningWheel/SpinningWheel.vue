@@ -1,9 +1,19 @@
 <template>
-  <svg
-    viewBox="-1 -1 2 2"
-    :style="sassVariable"
-    :class="{ rotate: this.spinning }"
-  ></svg>
+  <div class="spinning-wheel">
+    <svg
+      viewBox="-1 -1 2 2"
+      :style="sassVariable"
+      class="spinning-wheel__wheel"
+      :class="{ 'spinning-wheel__wheel_rotating': this.spinning }"
+      @click="spinOnClick"
+    ></svg>
+    <svg class="spinning-wheel__arrow">
+      <path
+        d="M6.50581 32.1376C-0.98699 29.8024 -0.98699 19.1976 6.50581 16.8624L56.3696 1.32146C61.5198 -0.283703 66.75 3.56453 66.75 8.95911V40.0409C66.75 45.4355 61.5198 49.2837 56.3696 47.6785L6.50581 32.1376Z"
+        fill="#FFF"
+      />
+    </svg>
+  </div>
 </template>
 
 <script>
@@ -19,6 +29,10 @@ export default {
     colors: {
       type: Array,
       default: () => ["#3D405B", "#81B29A", "#F2CC8F", "#E07A5F"],
+    },
+    canBeClicked: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -99,13 +113,14 @@ export default {
         "http://www.w3.org/2000/svg",
         "text"
       );
-      text.setAttributeNS(null, "font-size", "0.2");
+      text.setAttributeNS(null, "font-size", "0.1");
       text.setAttribute("x", "0");
       text.setAttribute("y", "0");
       text.setAttribute("fill", "#FFF");
-      text.setAttribute("text-anchor", "start");
+      text.setAttribute("text-anchor", "end");
+      text.setAttribute("font-family", "monospace");
       text.setAttribute("dominant-baseline", "middle");
-      text.setAttribute("transform", `rotate(${degAngle}) translate(0.2, 0) `);
+      text.setAttribute("transform", `rotate(${degAngle}) translate(0.9, 0) `);
       text.textContent = val;
       svgEl.appendChild(text);
     },
@@ -127,25 +142,52 @@ export default {
       }, this.getAnimationTime() * 1000);
     },
 
+    spinOnClick() {
+      if (this.canBeClicked) {
+        this.spin(Math.random() * 6 + 2);
+      }
+    },
+
     getIndexAnswer() {
       const answerAngle = this.turns % 1;
       const answerSize = this.values.length == 0 ? 0 : 1 / this.values.length;
       return this.values.length - Math.ceil(answerAngle / answerSize);
     },
   },
+  watch: {
+    values(value) {
+      this.drawSlices(value);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-svg {
+.spinning-wheel {
+  position: relative;
   min-height: 100px;
   min-width: 100px;
   max-height: 600px;
   max-width: 600px;
-}
 
-.rotate {
-  animation: var(--animation) ease-out rotation forwards;
+  &__wheel {
+    width: 100%;
+
+    &_rotating {
+      animation: var(--animation) ease-out rotation forwards;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -50px;
+
+    width: 69px;
+    height: 48px;
+  }
 }
 
 @keyframes rotation {
