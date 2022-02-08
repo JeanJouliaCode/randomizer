@@ -24,7 +24,7 @@ export default {
   props: {
     values: {
       type: Array,
-      default: () => [""],
+      default: () => [],
     },
     colors: {
       type: Array,
@@ -33,6 +33,10 @@ export default {
     canBeClicked: {
       type: Boolean,
       default: false,
+    },
+    font: {
+      type: String,
+      default: null,
     },
   },
   data() {
@@ -46,7 +50,7 @@ export default {
     sassVariable() {
       return {
         "--endTurn": `rotate(${this.turns}turn)`,
-        "--animation": `${this.getAnimationTime()}s`,
+        "--animation": `${this.getAnimationTime(this.turns)}s`,
       };
     },
   },
@@ -58,6 +62,17 @@ export default {
       return [x, y];
     },
     drawSlices(values) {
+      if (!values || values.length === 0 || values.length === 1) {
+        let text = "";
+        if (values?.length === 1) {
+          text = values[0];
+        }
+
+        this.drawSlice(0, 0.4, this.colors[0], text);
+        this.drawSlice(0.3, 0.7, this.colors[0], "");
+        this.drawSlice(0.6, 1, this.colors[0], "");
+        return;
+      }
       values.forEach((value, index) => {
         const startSlice = index == 0 ? 0 : (1 / values.length) * index;
         const endSlice = (1 / values.length) * (index + 1);
@@ -69,19 +84,19 @@ export default {
         );
       });
     },
-    getAnimationTime() {
-      return this.turns * (this.turns > 3 ? 0.5 : 0.7);
+    getAnimationTime(turns) {
+      return turns * (turns > 3 ? 0.5 : 0.7);
     },
     getColor(index) {
       if (
         this.colors[index % this.colors.length] === this.colors[0] &&
-        index != 0
+        index === this.values.length - 1
       )
         return this.colors[1];
       return this.colors[index % this.colors.length];
     },
     drawSlice(startPercentage, endPercentage, color, text) {
-      const svgEl = document.querySelector("svg");
+      const svgEl = document.querySelector(".spinning-wheel__wheel");
 
       const [startX, startY] = this.getCoordinatesForPercent(startPercentage);
       const [endX, endY] = this.getCoordinatesForPercent(endPercentage);
@@ -101,12 +116,13 @@ export default {
       );
       pathEl.setAttribute("d", pathData);
       pathEl.setAttribute("fill", color);
-      svgEl.appendChild(pathEl);
+      if (svgEl) svgEl.appendChild(pathEl);
+
       this.drawText(text, (startPercentage + endPercentage) / 2);
     },
 
     drawText(val, angle) {
-      const svgEl = document.querySelector("svg");
+      const svgEl = document.querySelector(".spinning-wheel__wheel");
       const degAngle = 360 * angle;
 
       const text = document.createElementNS(
@@ -118,11 +134,11 @@ export default {
       text.setAttribute("y", "0");
       text.setAttribute("fill", "#FFF");
       text.setAttribute("text-anchor", "end");
-      text.setAttribute("font-family", "monospace");
+      text.setAttribute("font-family", this.font ? this.font : "monospace");
       text.setAttribute("dominant-baseline", "middle");
       text.setAttribute("transform", `rotate(${degAngle}) translate(0.9, 0) `);
       text.textContent = val;
-      svgEl.appendChild(text);
+      if (svgEl) svgEl.appendChild(text);
     },
 
     spin(value) {
@@ -133,13 +149,12 @@ export default {
       }, 100);
 
       setTimeout(() => {
-        const indexAnswer = this.getIndexAnswer();
+        const indexAnswer = this.getIndexAnswer(this.turns);
         this.$emit("answer", {
           answer: this.values[indexAnswer],
           index: indexAnswer,
         });
-        console.log(this.values[indexAnswer]);
-      }, this.getAnimationTime() * 1000);
+      }, this.getAnimationTime(this.turns) * 1000);
     },
 
     spinOnClick() {
@@ -148,8 +163,8 @@ export default {
       }
     },
 
-    getIndexAnswer() {
-      const answerAngle = this.turns % 1;
+    getIndexAnswer(turns) {
+      const answerAngle = turns % 1;
       const answerSize = this.values.length == 0 ? 0 : 1 / this.values.length;
       return this.values.length - Math.ceil(answerAngle / answerSize);
     },
