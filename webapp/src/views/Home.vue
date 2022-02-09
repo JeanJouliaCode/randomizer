@@ -18,7 +18,6 @@
       <TextArea class="home__textArea" @input="handleTextArea" />
       <Button label="Spin the wheel" @click="spinTheWheel" />
     </template>
-  </BoilerPlateHome>
 </template>
 
 <script>
@@ -58,12 +57,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home {
-  display: grid;
-  height: 100vh;
-  width: 100vw;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 17em 4fr 1fr;
-
   &__spiningWheel {
     width: 57em;
     height: 57em;
