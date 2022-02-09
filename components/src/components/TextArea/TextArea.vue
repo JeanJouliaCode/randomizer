@@ -19,6 +19,7 @@ textarea {
   border-radius: 8px;
   resize: none;
   border: none;
+  padding: 1em;
 
   &:focus {
     outline: none !important;
