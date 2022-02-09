@@ -27,7 +27,6 @@ export default {
 
 <style lang="scss" scoped>
 .select {
-  background: chartreuse;
   border-radius: 0.5em;
   padding: 0 1.2em;
   border: unset;

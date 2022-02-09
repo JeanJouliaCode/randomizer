@@ -1,35 +1,57 @@
 <template>
-  <div class="home">
-    <div class="header"><h1>Random wheel</h1></div>
-    <div class="main">
-      <div class="spiningWheel"></div>
-    </div>
-    <div class="right">
-      <select id="cars" name="cars">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="fiat">Fiat</option>
-        <option value="audi">Audi</option>
-      </select>
-      <TextArea class="TextArea" />
-      <Button label="Spin the wheel" @click="click" />
-    </div>
-    <div class="footer"></div>
-  </div>
+  <BoilerPlateHome>
+    <template #header>
+      <h1>Random wheel</h1>
+      <span class="home__answer">{{ answer }}</span>
+    </template>
+    <template #main>
+      <SpinningWheel
+        ref="wheel"
+        class="home__spiningWheel"
+        :values="wheelValues"
+        @answer="handleWheelResponse"
+        font="Balsamiq Sans"
+      />
+    </template>
+    <template #form>
+      <Select :options="['Regular']" />
+      <TextArea class="home__textArea" @input="handleTextArea" />
+      <Button label="Spin the wheel" @click="spinTheWheel" />
+    </template>
+  </BoilerPlateHome>
 </template>
 
 <script>
-import { Button, TextArea } from "randomizer-components";
+import { Button, TextArea, Select, SpinningWheel } from "randomizer-components";
+import BoilerPlateHome from "../components/BoilerPlateHome.vue";
 
 export default {
   name: "Home",
   components: {
     Button,
     TextArea,
+    Select,
+    SpinningWheel,
+    BoilerPlateHome,
+  },
+  data() {
+    return {
+      wheelValues: [],
+      answer: " ",
+    };
   },
   methods: {
-    click() {
-      console.log("test!");
+    spinTheWheel() {
+      this.$refs.wheel.spin(Math.random() * 5 + 3);
+    },
+    handleTextArea(text) {
+      const values = text
+        .split("\n")
+        .filter((val) => !/^\s+$/.test(val) && val !== "");
+      this.wheelValues = values;
+    },
+    handleWheelResponse(answer) {
+      this.answer = answer.answer;
     },
   },
 };
@@ -41,50 +63,20 @@ export default {
   width: 100vw;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 17em 4fr 1fr;
-}
 
-.spiningWheel {
-  width: 57em;
-  height: 57em;
+  &__spiningWheel {
+    width: 57em;
+    height: 57em;
+  }
 
-  border-radius: 50%;
-  background: rgb(216, 115, 115);
-}
+  &__answer {
+    font-size: 1em;
+  }
 
-.header {
-  grid-column: 1 / 3;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3em;
-}
-.main {
-  grid-column: 1 / 2;
-  grid-row: 2;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.right {
-  grid-column: 2 / 3;
-  grid-row: 2;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.TextArea {
-  height: 37em;
-  width: 34em;
-  margin: 1em 0 1em 0;
-}
-
-.footer {
-  grid-column: 1 / 3;
-  grid-row: 3;
+  &__textArea {
+    height: 37em;
+    width: 34em;
+    margin: 1em 0 1em 0;
+  }
 }
 </style>
