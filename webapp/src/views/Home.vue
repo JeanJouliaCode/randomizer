@@ -18,6 +18,7 @@
       <TextArea class="home__textArea" @input="handleTextArea" />
       <Button label="Spin the wheel" @click="spinTheWheel" />
     </template>
+  </BoilerPlateHome>
 </template>
 
 <script>
