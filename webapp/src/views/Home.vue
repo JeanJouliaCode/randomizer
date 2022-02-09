@@ -16,7 +16,11 @@
     <template #form>
       <Select :options="['Regular']" />
       <TextArea class="home__textArea" @input="handleTextArea" />
-      <Button label="Spin the wheel" @click="spinTheWheel" />
+      <Button
+        class="home__spin-button"
+        label="Spin the wheel"
+        @click="spinTheWheel"
+      />
     </template>
   </BoilerPlateHome>
 </template>
@@ -59,8 +63,10 @@ export default {
 <style lang="scss" scoped>
 .home {
   &__spiningWheel {
-    width: 57em;
-    height: 57em;
+    max-width: 57em;
+    width: 100%;
+
+    margin: 1em;
   }
 
   &__answer {
@@ -69,8 +75,14 @@ export default {
 
   &__textArea {
     height: 37em;
-    width: 34em;
     margin: 1em 0 1em 0;
+
+    max-width: 34em;
+    width: 100%;
+  }
+
+  &__spin-button {
+    margin-bottom: 1em;
   }
 }
 </style>
