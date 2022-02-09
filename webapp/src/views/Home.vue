@@ -27,7 +27,7 @@
 
 <script>
 import { Button, TextArea, Select, SpinningWheel } from "randomizer-components";
-import BoilerPlateHome from "../components/BoilerPlateHome.vue";
+import BoilerPlateHome from "@/components/BoilerPlateHome.vue";
 
 export default {
   name: "Home",
@@ -54,8 +54,8 @@ export default {
         .filter((val) => !/^\s+$/.test(val) && val !== "");
       this.wheelValues = values;
     },
-    handleWheelResponse(answer) {
-      this.answer = answer.answer;
+    handleWheelResponse(response) {
+      this.answer = response.answer;
     },
   },
 };
