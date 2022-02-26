@@ -1,6 +1,7 @@
 
 import { mount } from '@vue/test-utils';
 import Home from '@/views/Home.vue';
+import API from '@/services/API.js';
 
 let wrapper;
 
@@ -34,6 +35,34 @@ describe('Home', () => {
     await wrapper.find('.home__spin-button').trigger('click')
 
     expect(spinMethod).toBeCalledWith(8);
+  });
+
+  test('clicking the spin button should call the api if API is selected', async () => {
+    const spinMethod = jest.fn()
+    wrapper.vm.$refs.wheel.spin = spinMethod
+
+    await wrapper.setData({ selectedOption: { index: 1, value: "API" } })
+
+    jest.mock('@/services/API.js', () => jest.fn());
+    API.getRandomNumberFromAPI = jest.fn(() => ({ success: true, data: 2 }))
+
+    await wrapper.find('.home__spin-button').trigger('click')
+
+    expect(spinMethod).toBeCalledWith(13);
+  });
+
+  test('Should not spin if API selected and APi return error', async () => {
+    const spinMethod = jest.fn()
+    wrapper.vm.$refs.wheel.spin = spinMethod
+
+    await wrapper.setData({ selectedOption: { index: 1, value: "API" } })
+
+    jest.mock('@/services/API.js', () => jest.fn());
+    API.getRandomNumberFromAPI = jest.fn(() => ({ success: false }))
+
+    await wrapper.find('.home__spin-button').trigger('click')
+
+    expect(spinMethod).not.toBeCalled();
   });
 
   test("answer returned by the wheel should be displayed", async () => {
