@@ -1,7 +1,7 @@
 
 import { mount } from '@vue/test-utils';
 import Home from '@/views/Home.vue';
-import API from '@/services/API.js';
+import API from '@/services/api.js';
 
 let wrapper;
 
