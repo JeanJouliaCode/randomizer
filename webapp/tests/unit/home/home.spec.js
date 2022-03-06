@@ -43,7 +43,7 @@ describe('Home', () => {
 
     await wrapper.setData({ selectedOption: { index: 1, value: "API" } })
 
-    jest.mock('@/services/API.js', () => jest.fn());
+    jest.mock('@/services/api.js', () => jest.fn());
     API.getRandomNumberFromAPI = jest.fn(() => ({ success: true, data: 2 }))
 
     await wrapper.find('.home__spin-button').trigger('click')
@@ -57,7 +57,7 @@ describe('Home', () => {
 
     await wrapper.setData({ selectedOption: { index: 1, value: "API" } })
 
-    jest.mock('@/services/API.js', () => jest.fn());
+    jest.mock('@/services/api.js', () => jest.fn());
     API.getRandomNumberFromAPI = jest.fn(() => ({ success: false }))
 
     await wrapper.find('.home__spin-button').trigger('click')
