@@ -1,9 +1,10 @@
 {
   "name": "randomizer-components",
-  "version": "1.0.6",
-  "main": "./dist/randomizer-components.common.js",
+  "version": "1.0.8",
+  "main": "dist/randomizer-components.common.js",
   "files": [
-    "./dist/*"
+    "dist/*",
+    "src/**/*.vue"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
