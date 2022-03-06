@@ -1,9 +1,10 @@
 {
   "name": "randomizer-components",
-  "version": "1.0.3",
-  "main": "./dist/components-library.common.js",
+  "version": "1.0.8",
+  "main": "dist/randomizer-components.common.js",
   "files": [
-    "./dist/*"
+    "dist/*",
+    "src/**/*.vue"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -11,7 +12,7 @@
     "lint": "vue-cli-service lint",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build": "vue-cli-service build --target lib --name components-library ./src/index.js"
+    "build": "vue-cli-service build --target lib --name randomizer-components ./src/index.js"
   },
   "dependencies": {
     "animejs": "^3.2.1",
