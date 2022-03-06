@@ -41,7 +41,7 @@
 <script>
 import { Button, TextArea, Select, SpinningWheel } from "randomizer-components";
 import BoilerPlateHome from "@/components/BoilerPlateHome.vue";
-import API from "@/services/API.js";
+import API from "@/services/api.js";
 
 export default {
   name: "Home",
