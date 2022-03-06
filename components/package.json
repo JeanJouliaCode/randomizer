@@ -1,7 +1,7 @@
 {
   "name": "randomizer-components",
-  "version": "1.0.4",
-  "main": "./dist/components-library.common.js",
+  "version": "1.0.6",
+  "main": "./dist/randomizer-components.common.js",
   "files": [
     "./dist/*"
   ],
