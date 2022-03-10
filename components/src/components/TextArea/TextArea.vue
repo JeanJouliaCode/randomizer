@@ -20,6 +20,7 @@ textarea {
   resize: none;
   border: none;
   padding: 1em;
+  box-sizing: border-box;
 
   &:focus {
     outline: none !important;
