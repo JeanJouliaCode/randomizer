@@ -15,6 +15,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    secondary: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   methods: {
@@ -30,6 +34,7 @@ export default {
       return {
         "my-button": true,
         "my-button--disabled": this.disabled,
+        "my-button__secondary": this.secondary,
       };
     },
   },
@@ -51,8 +56,12 @@ export default {
   align-items: center;
 
   &--disabled {
-    background: $light-green;
+    opacity: 0.5;
     pointer-events: none;
+  }
+
+  &__secondary {
+    background: $red;
   }
 }
 </style>
