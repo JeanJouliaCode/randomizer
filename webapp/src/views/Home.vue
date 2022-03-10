@@ -26,13 +26,26 @@
           v-model="selectedOption"
           class="home__selecy"
         />
-        <TextArea class="home__textArea" @input="handleTextArea" />
-        <Button
-          class="home__spin-button"
-          label="Spin the wheel"
-          :disabled="buttonDisabled"
-          @click="spinTheWheel"
+        <TextArea
+          class="home__textArea"
+          @input="handleTextAreaChange"
+          :content="testAreaContent"
         />
+        <div class="home__action-container">
+          <Button
+            class="home__spin-button"
+            label="Spin the wheel"
+            :disabled="buttonDisabled"
+            @click="spinTheWheel"
+          />
+          <Button
+            class="home__spin-button"
+            label="Remove answer"
+            :disabled="buttonDisabled || answer === ''"
+            @click="removeAnswer"
+            :secondary="true"
+          />
+        </div>
       </div>
     </template>
   </BoilerPlateHome>
@@ -42,6 +55,7 @@
 import { Button, TextArea, Select, SpinningWheel } from "randomizer-components";
 import BoilerPlateHome from "@/components/BoilerPlateHome.vue";
 import API from "@/services/api.js";
+import { setTextAreaValue, getTextAreaValue } from "@/services/localStorage.js";
 
 export default {
   name: "Home",
@@ -55,11 +69,13 @@ export default {
   data() {
     return {
       wheelValues: [],
-      answer: " ",
+      answer: "",
+      answerIndex: null,
       selectOption: ["Regular", "API"],
       selectedOption: { index: 0, value: "Regular" },
       buttonDisabled: false,
       showPartyFavors: false,
+      testAreaContent: "",
     };
   },
   methods: {
@@ -89,24 +105,49 @@ export default {
 
       this.$refs.wheel.spin(randomNumer);
     },
-    handleTextArea(text) {
+    handleTextAreaChange(text) {
+      this.testAreaContent = text;
+
       const values = text
         .split("\n")
         .filter((val) => !/^\s+$/.test(val) && val !== "");
       this.wheelValues = values;
+      setTextAreaValue(text);
     },
     getNumberOfTurn(number) {
       return number * 5 + 3;
     },
     handleWheelResponse(response) {
       this.answer = response.answer;
+      this.answerIndex = response.index;
       this.buttonDisabled = false;
       this.displayPartyFavors();
+    },
+    removeAnswer() {
+      const lines = this.testAreaContent.split("\n");
+      let lineFound = false;
+      let newString = null;
+      let countMeaningFullLine = 0;
+      lines.forEach((line) => {
+        if (!/^\s+$/.test(line) && line != "") countMeaningFullLine++;
+
+        if (countMeaningFullLine - 1 !== this.answerIndex || lineFound) {
+          newString = newString === null ? line : `${newString}\n${line}`;
+        } else {
+          lineFound = true;
+        }
+      });
+      this.testAreaContent = newString;
+      this.answer = "";
     },
     displayPartyFavors() {
       this.showPartyFavors = true;
       setTimeout(() => (this.showPartyFavors = false), 2000);
     },
+  },
+  mounted() {
+    const storedText = getTextAreaValue();
+    this.testAreaContent = storedText ?? "";
   },
 };
 </script>
@@ -145,6 +186,12 @@ export default {
   &__party_favors {
     position: absolute;
     top: 0px;
+  }
+
+  &__action-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

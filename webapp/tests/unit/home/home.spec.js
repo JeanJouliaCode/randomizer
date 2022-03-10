@@ -70,4 +70,11 @@ describe('Home', () => {
     const value = wrapper.find('.home__answer').text()
     expect(value).toContain("test");
   });
+
+  test("should remove answer when clicking the remove answer button", async () => {
+    wrapper.vm.testAreaContent = 'test0\ntest1'
+    await wrapper.find('.home__spiningWheel').vm.$emit('answer', { answer: "test1", index: 1 })
+    await wrapper.findAll('.home__spin-button').at(1).trigger('click')
+    expect(wrapper.vm.testAreaContent).toBe("test0");
+  });
 });
