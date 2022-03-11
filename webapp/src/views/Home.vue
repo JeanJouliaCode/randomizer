@@ -32,12 +32,19 @@
           :content="testAreaContent"
         />
         <div class="home__action-container">
+          <StrengthBar
+            v-if="selectedOption.value === 'Strength'"
+            :disabled="buttonDisabled"
+            @result="handleStengthResult"
+          />
           <Button
+            v-else
             class="home__spin-button"
             label="Spin the wheel"
             :disabled="buttonDisabled"
             @click="spinTheWheel"
           />
+
           <Button
             class="home__spin-button"
             label="Remove answer"
@@ -52,7 +59,13 @@
 </template>
 
 <script>
-import { Button, TextArea, Select, SpinningWheel } from "randomizer-components";
+import {
+  Button,
+  TextArea,
+  Select,
+  SpinningWheel,
+  StrengthBar,
+} from "randomizer-components";
 import BoilerPlateHome from "@/components/BoilerPlateHome.vue";
 import API from "@/services/api.js";
 import { setTextAreaValue, getTextAreaValue } from "@/services/localStorage.js";
@@ -65,17 +78,19 @@ export default {
     Select,
     SpinningWheel,
     BoilerPlateHome,
+    StrengthBar,
   },
   data() {
     return {
       wheelValues: [],
       answer: "",
       answerIndex: null,
-      selectOption: ["Regular", "API"],
+      selectOption: ["Regular", "API", "Strength"],
       selectedOption: { index: 0, value: "Regular" },
       buttonDisabled: false,
       showPartyFavors: false,
       testAreaContent: "",
+      showStrengthBar: false,
     };
   },
   methods: {
@@ -104,6 +119,10 @@ export default {
       }
 
       this.$refs.wheel.spin(randomNumer);
+    },
+    handleStengthResult(result) {
+      this.buttonDisabled = true;
+      this.$refs.wheel.spin(result * 10);
     },
     handleTextAreaChange(text) {
       this.testAreaContent = text;
