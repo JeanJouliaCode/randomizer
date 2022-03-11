@@ -1,12 +1,28 @@
 <template>
-  <textarea @input="handleChange"></textarea>
+  <textarea @input="handleChange" v-model="value"></textarea>
 </template>
 
 <script>
 export default {
+  props: {
+    content: {
+      default: "",
+    },
+  },
+  data() {
+    return {
+      value: "",
+    };
+  },
   methods: {
     handleChange({ target }) {
       this.$emit("input", target.value);
+    },
+  },
+  watch: {
+    content(newVal) {
+      this.value = newVal;
+      this.$emit("input", newVal);
     },
   },
 };
@@ -20,6 +36,7 @@ textarea {
   resize: none;
   border: none;
   padding: 1em;
+  box-sizing: border-box;
 
   &:focus {
     outline: none !important;
