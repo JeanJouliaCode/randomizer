@@ -1,6 +1,6 @@
 {
   "name": "randomizer-components",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "main": "dist/randomizer-components.common.js",
   "files": [
     "dist/*",
