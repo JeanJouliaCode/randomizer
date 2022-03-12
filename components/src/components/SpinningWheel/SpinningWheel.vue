@@ -49,7 +49,7 @@ export default {
   computed: {
     sassVariable() {
       return {
-        "--endTurn": `rotate(${this.turns}turn)`,
+        "--endTurn": `rotate3d(0,0,1,${this.turns}turn)`,
         "--animation": `${this.getAnimationTime(this.turns)}s`,
       };
     },
