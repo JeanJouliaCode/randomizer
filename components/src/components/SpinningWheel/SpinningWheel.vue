@@ -1,7 +1,7 @@
 <template>
   <div class="spinning-wheel">
     <svg
-      viewBox="-1 -1 2 2"
+      :viewBox="`-${RADIUS} -${RADIUS} ${2 * RADIUS} ${2 * RADIUS}`"
       :style="sassVariable"
       class="spinning-wheel__wheel"
       :class="{ 'spinning-wheel__wheel_rotating': this.spinning }"
@@ -28,8 +28,7 @@ export default {
     },
     colors: {
       type: Array,
-      // default: () => ["#3D405B", "#81B29A", "#F2CC8F", "#E07A5F"],
-      default: () => ["red", "#81B29A", "#F2CC8F", "#E07A5F"],
+      default: () => ["#3D405B", "#81B29A", "#F2CC8F", "#E07A5F"],
     },
     canBeClicked: {
       type: Boolean,
@@ -45,6 +44,7 @@ export default {
       angle: 0,
       turns: 0,
       spinning: false,
+      RADIUS: 300,
     };
   },
   computed: {
@@ -57,8 +57,8 @@ export default {
   },
   methods: {
     getCoordinatesForPercent(percent) {
-      const x = Math.cos(2 * Math.PI * percent);
-      const y = Math.sin(2 * Math.PI * percent);
+      const x = Math.cos(2 * Math.PI * percent) * this.RADIUS;
+      const y = Math.sin(2 * Math.PI * percent) * this.RADIUS;
 
       return [x, y];
     },
@@ -107,7 +107,7 @@ export default {
 
       const pathData = [
         `M ${startX} ${startY}`, // Move
-        `A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY}`, // Arc
+        `A ${this.RADIUS} ${this.RADIUS} 0 ${largeArcFlag} 1 ${endX} ${endY}`, // Arc
         `L 0 0`, // Line
       ].join(" ");
 
@@ -130,14 +130,17 @@ export default {
         "http://www.w3.org/2000/svg",
         "text"
       );
-      text.setAttributeNS(null, "font-size", "0.1");
+      text.setAttributeNS(null, "font-size", (0.1 * this.RADIUS).toString());
       text.setAttribute("x", "0");
       text.setAttribute("y", "0");
       text.setAttribute("fill", "#FFF");
       text.setAttribute("text-anchor", "end");
       text.setAttribute("font-family", this.font ? this.font : "monospace");
       text.setAttribute("dominant-baseline", "middle");
-      text.setAttribute("transform", `rotate(${degAngle}) translate(0.9, 0) `);
+      text.setAttribute(
+        "transform",
+        `rotate(${degAngle}) translate(${0.93 * this.RADIUS}, 0) `
+      );
       text.textContent = val;
       if (svgEl) svgEl.appendChild(text);
     },
