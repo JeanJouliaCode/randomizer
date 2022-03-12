@@ -28,7 +28,8 @@ export default {
     },
     colors: {
       type: Array,
-      default: () => ["#3D405B", "#81B29A", "#F2CC8F", "#E07A5F"],
+      // default: () => ["#3D405B", "#81B29A", "#F2CC8F", "#E07A5F"],
+      default: () => ["red", "#81B29A", "#F2CC8F", "#E07A5F"],
     },
     canBeClicked: {
       type: Boolean,
@@ -49,7 +50,7 @@ export default {
   computed: {
     sassVariable() {
       return {
-        "--endTurn": `rotate3d(0,0,1,${this.turns}turn)`,
+        "--endTurn": `rotate3d(0,0,1.00001,${this.turns}turn)`,
         "--animation": `${this.getAnimationTime(this.turns)}s`,
       };
     },
@@ -207,7 +208,7 @@ export default {
 
 @keyframes rotation {
   0% {
-    transform: rotate(0);
+    transform: rotate3d(1, 1, 1, 0);
   }
   100% {
     transform: var(--endTurn);
